@@ -1,4 +1,4 @@
-#Repository for the Party Institutionalization and Party Strength dataset (PIPS)
+**Repository for the Party Institutionalization and Party Strength dataset (PIPS)**
 
 To use our original dataset from our "Party Institutionalization and Party Strength: A New Global Dataset" paper, click [here](pips/pips_beta1.csv). Our codebook for the dataset is [here](pips/PIPS%20Codebook.pdf). 
 
