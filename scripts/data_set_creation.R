@@ -23,16 +23,16 @@ library(vdemdata)
 #v2padisa: internal cohesion -- increasing is more cohesion
 #v2paind: personalization -- increasing is more personalization so invert
 
-df1 <- read_rds("v2panom_finished/v2panom_mid.rds") %>%
+df1 <- read_rds("data/manipulated v2panom/v2panom_mid.rds") %>%
   rename(v2panom_end = v2panom) 
 
-df2 <- read_rds("v2panom_finished/v2panom_mid.rds") %>%
+df2 <- read_rds("data/manipulated v2panom/v2panom_mid.rds") %>%
   rename(v2panom_mid = v2panom)
 
 df3 <- vparty %>% 
   select(country_text_id, historical_date, partyfacts_id = pf_party_id, v2panom_original = v2panom, party_id = v2paid, country_name, year, e_regiongeo, v2pavote, v2paenname, v2pashname, v2paid,  v2pasoctie, v2palocoff, v2paactcom, v2padisa, v2paind, v2paseatshare, v2pavote, v2pagovsup, v2paclient, COWcode, country_id, v2panaallian, v2paallian)
 
-df4 <- read_rds("v2panom_finished/v2panom_replication.rds") %>% 
+df4 <- read_rds("data/manipulated v2panom/v2panom_replication.rds") %>% 
   rename(v2panom_replication = v2panom)
 
 df5 <- vparty %>%
