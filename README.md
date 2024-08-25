@@ -25,6 +25,5 @@ You can then run our alterations with [end](data/manipulated%20v2panom/v2panom_e
 The [replication](data/manipulated%20v2panom/v2panom_replication.rds) was just to make sure we could replicate VDem's original coding.
 
 [corplots.R](scripts/corplots.R): used to find correlations between our dataset and other prominent datasets.
-[Factor analysis](scripts/factor_analysis.R): used to figure out which variables should be used together to measure PI vs PS.
-[data_set_creation](scripts/data_set_creation.R): where we actually create our dataset with our reordered v2panom and other variables. 
+[data_set_creation](scripts/data_set_creation.R): where we create our dataset with our reordered v2panom and other variables. 
 [exploratory_analysis](scripts/exploratory_analysis.R): used to see how our measures predict prominent economic outcomes in the literature.
