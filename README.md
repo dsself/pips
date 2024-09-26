@@ -1,6 +1,6 @@
 **Repository for the Party Institutionalization and Party Strength dataset (PIPS)**
 
-To use our original dataset from our "Party Institutionalization and Party Strength: A New Global Dataset" paper, click [here](pips/pips_beta1.csv). Our codebook for the dataset is [here](pips/PIPS%20Codebook.pdf). 
+To use our original dataset from our "Party Institutionalization and Party Strength: A New Global Dataset" paper, click [here](pips/pips_beta2.csv). Our codebook for the dataset is [here](pips/PIPS%20Codebook.pdf). 
 
 If you'd like to use other non V-Dem variables (we used these for controls and sometimes outcomes), you can find income inequality data [here](data/incomeineq.csv), capital stock data [here](data/capitalstock.xlsx). Capital stock data comes from the World Bank, whose data can be found in Nehru and Dhareswhar's "New database on physical capital stock: Sources, methodology and results" (1993). Income inequality data comes from the IMF, whose data can be found in the IMF's 2015 report entitled "Making public investment more efficient."
 To use the V-Dem variables (the primary source of most of our outcomes and controls), please go to [this website](https://v-dem.net/data/the-v-dem-dataset/country-year-v-dem-fullothers-v14/).
@@ -25,5 +25,5 @@ You can then run our alterations with [end](data/manipulated%20v2panom/v2panom_e
 The [replication](data/manipulated%20v2panom/v2panom_replication.rds) was just to make sure we could replicate VDem's original coding.
 
 [corplots.R](scripts/corplots.R): used to find correlations between our dataset and other prominent datasets.
-[data_set_creation](scripts/data_set_creation.R): where we create our dataset with our reordered v2panom and other variables. 
+[data_set_creation](scripts/data_set_creation_beta2.R): where we create our dataset with our reordered v2panom and other variables. 
 [exploratory_analysis](scripts/exploratory_analysis.R): used to see how our measures predict prominent economic outcomes in the literature.
