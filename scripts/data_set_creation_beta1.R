@@ -654,9 +654,9 @@ party_inst <- left_join(party_inst, poly, by = c("country_id", "year"))
 
 party_inst <- left_join(party_inst, comp, by = c("party_id", "year"))
 
-party_inst <- left_join(party_inst, reorder, by = c("party_id", "year"))
+party_inst1 <- left_join(party_inst, reorder, by = c("party_id", "year"))
 
 #### output the names  
 
-write.csv(party_inst, file = "data/pips_beta1.csv", row.names = FALSE)
+write.csv(party_inst1, file = "data/pips_beta1.csv", row.names = FALSE)
 

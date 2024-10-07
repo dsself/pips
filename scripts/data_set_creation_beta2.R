@@ -162,7 +162,7 @@ groups <- groups %>%
   mutate(groupscore = (groupscore - min(groupscore)) / (max(groupscore) - min(groupscore)))
 
 #join back to main data
-data <- left_join(groups, data, by=c("party_id", "year", "country_name"))
+data <- left_join(data, groups, by=c("party_id", "year", "country_name"))
 
 ###create dataset with just the funds
 funds <- select(data, year, party_id, country_name, v2pafunds_0, v2pafunds_1, v2pafunds_2, v2pafunds_3, v2pafunds_4, v2pafunds_5,
@@ -187,7 +187,7 @@ funds <- funds %>%
 
 
 #join back to main data
-data <- left_join(funds, data, by=c("party_id", "year", "country_name"))
+data <- left_join(data, funds, by=c("party_id", "year", "country_name"))
 
 #### For democracies
 democracy <- subset(data, v2x_polyarchy >= .42)
@@ -594,10 +594,10 @@ reorder <- df %>%
   dplyr::select(party_id, year, v2panom_end)
 party_inst <- left_join(party_inst, poly, by = c("country_id", "year"))
 party_inst <- left_join(party_inst, comp, by = c("party_id", "year"))
-party_inst <- left_join(party_inst, reorder, by = c("party_id", "year"))
+party_inst2 <- left_join(party_inst, reorder, by = c("party_id", "year"))
 
 
 
 #### output the names  
-write.csv(party_inst, file = "data/pips_beta2.csv", row.names = FALSE)
+write.csv(party_inst2, file = "data/pips_beta2.csv", row.names = FALSE)
 
