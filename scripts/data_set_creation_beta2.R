@@ -30,7 +30,7 @@ library(ggplot2)
 
 
 # Set up Data -------------------------------------------------------------
-df1 <- read_rds("data/manipulated v2panom/v2panom_mid.rds") %>%
+df1 <- read_rds("data/manipulated v2panom/v2panom_end.rds") %>%
   rename(v2panom_end = v2panom) 
 
 df2 <- read_rds("data/manipulated v2panom/v2panom_mid.rds") %>%
