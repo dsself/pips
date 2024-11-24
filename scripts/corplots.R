@@ -5,7 +5,7 @@ library(ggcorrplot)
 library(countrycode)
 
 #### Read in the data
-our_data <- read_csv("data/pips_beta1.csv")
+our_data <- read_csv("data/pips_beta2.csv")
 age <- read_csv("C:/Users/ochoc/Downloads/wikipedia.csv") %>%
   select(year_founded, partyfacts_id)
 ppdb <- read_csv("C:/Users/ochoc/Downloads/PPDB_Round2_v4.csv") %>%
@@ -70,7 +70,7 @@ our_data <- left_join(our_data, party_sys, by = c("COWcode", "year"))
 
 #### Correlation plots
 
-corplot_dta <- select(our_data, `V-Dem Party Inst.` = v2xps_party, `Party Inst.` = party_inst, `Party Strength`  = party_str, `System Ave. P.I.` = system_pi, `System Ave. P.S.` = system_ps, Age = age, `DALP Party Office` = a1, `DALP Party Organization` = a2, `DALP Party Intermediaries` = a3, `PPDB Party Members` = PPDB.Members, `PPDB Party Staff`= PPDB.Staff)
+corplot_dta <- select(our_data, `V-Dem Party Inst.` = v2xps_party.x, `Party Inst.` = party_inst, `Party Strength`  = party_str, `System Ave. P.I.` = system_pi, `System Ave. P.S.` = system_ps, Age = age, `DALP Party Office` = a1, `DALP Party Organization` = a2, `DALP Party Intermediaries` = a3, `PPDB Party Members` = PPDB.Members, `PPDB Party Staff`= PPDB.Staff)
 
 attach(corplot_dta)
 corrplot(cor(corplot_dta, use = "pairwise.complete.obs"), type = "lower", method = "color")
