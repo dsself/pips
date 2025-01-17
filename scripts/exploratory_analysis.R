@@ -25,11 +25,11 @@ library(vdemdata)
 
 # Data --------------------------------------------------------------------
 #read in data
-final <- read_csv("data/pips_beta2.csv") |> 
+final <- read_csv("C:/Users/shari/Downloads/pips_beta2.csv") |> 
   select(-v2x_polyarchy)
 
 #import vdem data
-vdemfull <- vdem %>%
+vdemfull <- readRDS("C:/Users/shari/Downloads/V-Dem-CY-Full+Others-v14.rds") %>%
   select(country_name, year, COWcode, v2x_polyarchy, v2peedueq, e_wbgi_cce, e_coups, e_pop, e_total_fuel_income_pc, v2x_veracc,
          v2x_horacc, e_gdppc, e_miinflat) 
 
@@ -43,11 +43,11 @@ ineq <- read.csv("data/swiid9_6_summary.csv")
 ineq$country_name <- ineq$country
 
 #import capital stock data
-stock <- read_excel("data/capitalstock.xlsx") |> 
+stock <- read_excel("C:/Users/shari/Downloads/capitalstock.xlsx") |> 
   rename(country_name = country, stock = kgov_rppp)
 
 #import GDP change data
-change <- read.csv("data/gdpgrowth.csv") %>%
+change <- read.csv("C:/Users/shari/Downloads/gdpgrowth.csv") %>%
   rename(country_name = cname) 
 
 
@@ -83,93 +83,93 @@ autocracy <- subset(data, v2x_polyarchy <= .42)
 # GDP Per Capita ----------------------------------------------------------
 ##GDP per Capita
 lm1 <- lm(gdplog ~ system_pi + e_total_fuel_income_pc + e_pop + stock + as.factor(COWcode) + as.factor(year), data=data)
-lm1se <- coeftest(lm1, cluster.vcov(lm1, data$COWcode))
+lm1se <- coeftest(lm1, cluster.vcov(lm1, data$COWcode))[, 2]
 
 lm2 <- lm(gdplog ~ system_ps + e_total_fuel_income_pc + e_pop + stock + as.factor(COWcode) + as.factor(year), data=data)
-lm2se <- coeftest(lm2, cluster.vcov(lm2, data$COWcode))
+lm2se <- coeftest(lm2, cluster.vcov(lm2, data$COWcode))[, 2]
 
 lm1.d <- lm(gdplog ~ system_pi + e_total_fuel_income_pc + e_pop + stock + as.factor(COWcode) + as.factor(year), data=democracy)
-lm1.dse <- coeftest(lm1.d, cluster.vcov(lm1.d, democracy$COWcode))
+lm1.dse <- coeftest(lm1.d, cluster.vcov(lm1.d, democracy$COWcode))[, 2]
 
 lm1.a <- lm(gdplog ~ system_pi + e_total_fuel_income_pc + e_pop + stock + as.factor(COWcode) + as.factor(year), data=autocracy)
-lm1.ase <- coeftest(lm1.a, cluster.vcov(lm1.a, autocracy$COWcode))
+lm1.ase <- coeftest(lm1.a, cluster.vcov(lm1.a, autocracy$COWcode))[, 2]
 
 
 lm2.d <- lm(gdplog ~ system_ps + e_total_fuel_income_pc + e_pop + stock + as.factor(COWcode) + as.factor(year), data=democracy)
-lm2.dse <- coeftest(lm2.d, cluster.vcov(lm2.d, democracy$COWcode))
+lm2.dse <- coeftest(lm2.d, cluster.vcov(lm2.d, democracy$COWcode))[, 2]
 
 lm2.a <- lm(gdplog ~ system_ps + e_total_fuel_income_pc + e_pop + stock + as.factor(COWcode) + as.factor(year), data=autocracy)
-lm2.ase <- coeftest(lm2.a, cluster.vcov(lm2.a, autocracy$COWcode))
+lm2.ase <- coeftest(lm2.a, cluster.vcov(lm2.a, autocracy$COWcode))[, 2]
 
 
 
 # Inflation ---------------------------------------------------------------
 
 lm3 <- lm(loginfl ~ system_pi + e_total_fuel_income_pc + e_pop + stock + as.factor(COWcode) + as.factor(year), data=data)
-lm3se <- coeftest(lm3, cluster.vcov(lm3, data$COWcode))
+lm3se <- coeftest(lm3, cluster.vcov(lm3, data$COWcode))[, 2]
 
 lm4 <- lm(loginfl ~ system_ps + e_total_fuel_income_pc + e_pop + stock + as.factor(COWcode) + as.factor(year), data=data)
-lm4se <- coeftest(lm4, cluster.vcov(lm4, data$COWcode))
+lm4se <- coeftest(lm4, cluster.vcov(lm4, data$COWcode))[, 2]
 
 
 lm3.d <- lm(loginfl ~ system_pi + e_total_fuel_income_pc + e_pop + stock + as.factor(COWcode) + as.factor(year), data=democracy)
-lm3.dse <- coeftest(lm3.d, cluster.vcov(lm3.d, democracy$COWcode))
+lm3.dse <- coeftest(lm3.d, cluster.vcov(lm3.d, democracy$COWcode))[, 2]
 
 lm3.a <- lm(loginfl ~ system_pi + e_total_fuel_income_pc + e_pop + stock + as.factor(COWcode) + as.factor(year), data=autocracy)
-lm3.ase <- coeftest(lm3.a, cluster.vcov(lm3.a, autocracy$COWcode))
+lm3.ase <- coeftest(lm3.a, cluster.vcov(lm3.a, autocracy$COWcode))[, 2]
 
 
 lm4.d <- lm(loginfl ~ system_ps + e_total_fuel_income_pc + e_pop + stock + as.factor(COWcode) + as.factor(year), data=democracy)
-lm4.dse <- coeftest(lm4.d, cluster.vcov(lm4.d, democracy$COWcode))
+lm4.dse <- coeftest(lm4.d, cluster.vcov(lm4.d, democracy$COWcode))[, 2]
 
 lm4.a <- lm(loginfl ~ system_ps + e_total_fuel_income_pc + e_pop + stock + as.factor(COWcode) + as.factor(year), data=autocracy)
-lm4.ase <- coeftest(lm4.a, cluster.vcov(lm4.a, autocracy$COWcode))
+lm4.ase <- coeftest(lm4.a, cluster.vcov(lm4.a, autocracy$COWcode))[, 2]
 
 
 
 # Investment -------------------------------------------------------------
 
 lm5 <- lm(investlog ~ system_pi + e_total_fuel_income_pc + e_pop + stock + as.factor(COWcode) + as.factor(year), data=data)
-lm5se <- coeftest(lm5, cluster.vcov(lm5, data$COWcode))
+lm5se <- coeftest(lm5, cluster.vcov(lm5, data$COWcode))[, 2]
 
 lm6 <- lm(investlog ~ system_ps + e_total_fuel_income_pc + e_pop + stock + as.factor(COWcode) + as.factor(year), data=data)
-lm6se <- coeftest(lm6, cluster.vcov(lm6, data$COWcode))
+lm6se <- coeftest(lm6, cluster.vcov(lm6, data$COWcode))[, 2]
 
 
 lm5.d <- lm(investlog ~ system_pi + e_total_fuel_income_pc + e_pop + stock + as.factor(COWcode) + as.factor(year), data=democracy)
-lm5.dse <- coeftest(lm5.d, cluster.vcov(lm5.d, democracy$COWcode))
+lm5.dse <- coeftest(lm5.d, cluster.vcov(lm5.d, democracy$COWcode))[, 2]
 
 lm5.a <- lm(investlog ~ system_pi + e_total_fuel_income_pc + e_pop + stock + as.factor(COWcode) + as.factor(year), data=autocracy)
-lm5.ase <- coeftest(lm5.a, cluster.vcov(lm5.a, autocracy$COWcode))
+lm5.ase <- coeftest(lm5.a, cluster.vcov(lm5.a, autocracy$COWcode))[, 2]
 
 
 lm6.d <- lm(investlog ~ system_ps + e_total_fuel_income_pc + e_pop + stock + as.factor(COWcode) + as.factor(year), data=democracy)
-lm6.dse <- coeftest(lm6.d, cluster.vcov(lm6.d, democracy$COWcode))
+lm6.dse <- coeftest(lm6.d, cluster.vcov(lm6.d, democracy$COWcode))[, 2]
 
 lm6.a <- lm(investlog ~ system_ps + e_total_fuel_income_pc + e_pop + stock + as.factor(COWcode) + as.factor(year), data=autocracy)
-lm6.ase <- coeftest(lm6.a, cluster.vcov(lm6.a, autocracy$COWcode))
+lm6.ase <- coeftest(lm6.a, cluster.vcov(lm6.a, autocracy$COWcode))[, 2]
 
 
 
 # Change in GDP -----------------------------------------------------------
 lm7 <- lm(wdi_gdpcapgr ~ system_pi + e_total_fuel_income_pc + e_pop + stock + as.factor(COWcode) + as.factor(year), data=data)
-lm7se <- coeftest(lm7, cluster.vcov(lm7, data$COWcode))
+lm7se <- coeftest(lm7, cluster.vcov(lm7, data$COWcode))[, 2]
 
 lm8 <- lm(wdi_gdpcapgr ~ system_ps + e_total_fuel_income_pc + e_pop + stock + as.factor(COWcode) + as.factor(year), data=data)
-lm8se <- coeftest(lm8, cluster.vcov(lm8, data$COWcode))
+lm8se <- coeftest(lm8, cluster.vcov(lm8, data$COWcode))[, 2]
 
 lm7.d <- lm(wdi_gdpcapgr ~ system_pi + e_total_fuel_income_pc + e_pop + stock + as.factor(COWcode) + as.factor(year), data=democracy)
-lm7.dse <- coeftest(lm7.d, cluster.vcov(lm7.d, democracy$COWcode))
+lm7.dse <- coeftest(lm7.d, cluster.vcov(lm7.d, democracy$COWcode))[, 2]
 
 lm7.a <- lm(wdi_gdpcapgr ~ system_pi + e_total_fuel_income_pc + e_pop + stock + as.factor(COWcode) + as.factor(year), data=autocracy)
-lm7.ase <- coeftest(lm7.a, cluster.vcov(lm7.a, autocracy$COWcode))
+lm7.ase <- coeftest(lm7.a, cluster.vcov(lm7.a, autocracy$COWcode))[, 2]
 
 
 lm8.d <- lm(wdi_gdpcapgr ~ system_ps + e_total_fuel_income_pc + e_pop + stock + as.factor(COWcode) + as.factor(year), data=democracy)
-lm8.dse <- coeftest(lm8.d, cluster.vcov(lm8.d, democracy$COWcode))
+lm8.dse <- coeftest(lm8.d, cluster.vcov(lm8.d, democracy$COWcode))[, 2]
 
 lm8.a <- lm(wdi_gdpcapgr ~ system_ps + e_total_fuel_income_pc + e_pop + stock + as.factor(COWcode) + as.factor(year), data=autocracy)
-lm8.ase <- coeftest(lm8.a, cluster.vcov(lm8.a, autocracy$COWcode))
+lm8.ase <- coeftest(lm8.a, cluster.vcov(lm8.a, autocracy$COWcode))[, 2]
 
 # Outputs, Reg Tables -----------------------------------------------------------------
 #Economic Outcomes, All Data
@@ -201,91 +201,91 @@ stargazer(lm1.a, lm2.a, lm7.a, lm8.a, lm3.a, lm4.a, lm5.a, lm6.a, se=list(lm1.as
 # GDP Per Capita ----------------------------------------------------------
 ##GDP per Capita
 lm1 <- lm(gdplog ~ system_pi + e_total_fuel_income_pc + e_pop + stock, data=data)
-lm1se <- coeftest(lm1, cluster.vcov(lm1, data$COWcode))
+lm1se <- coeftest(lm1, cluster.vcov(lm1, data$COWcode))[, 2]
 
 lm2 <- lm(gdplog ~ system_ps + e_total_fuel_income_pc + e_pop + stock, data=data)
-lm2se <- coeftest(lm2, cluster.vcov(lm2, data$COWcode))
+lm2se <- coeftest(lm2, cluster.vcov(lm2, data$COWcode))[, 2]
 
 lm1.d <- lm(gdplog ~ system_pi + e_total_fuel_income_pc + e_pop + stock, data=democracy)
-lm1.dse <- coeftest(lm1.d, cluster.vcov(lm1.d, democracy$COWcode))
+lm1.dse <- coeftest(lm1.d, cluster.vcov(lm1.d, democracy$COWcode))[, 2]
 
 lm1.a <- lm(gdplog ~ system_pi + e_total_fuel_income_pc + e_pop + stock, data=autocracy)
-lm1.ase <- coeftest(lm1.a, cluster.vcov(lm1.a, autocracy$COWcode))
+lm1.ase <- coeftest(lm1.a, cluster.vcov(lm1.a, autocracy$COWcode))[, 2]
 
 
 lm2.d <- lm(gdplog ~ system_ps + e_total_fuel_income_pc + e_pop + stock, data=democracy)
-lm2.dse <- coeftest(lm2.d, cluster.vcov(lm2.d, democracy$COWcode))
+lm2.dse <- coeftest(lm2.d, cluster.vcov(lm2.d, democracy$COWcode))[, 2]
 
 lm2.a <- lm(gdplog ~ system_ps + e_total_fuel_income_pc + e_pop + stock, data=autocracy)
-lm2.ase <- coeftest(lm2.a, cluster.vcov(lm2.a, autocracy$COWcode))
+lm2.ase <- coeftest(lm2.a, cluster.vcov(lm2.a, autocracy$COWcode))[, 2]
 
 
 # Inflation ---------------------------------------------------------------
 
 lm3 <- lm(loginfl ~ system_pi + e_total_fuel_income_pc + e_pop + stock, data=data)
-lm3se <- coeftest(lm3, cluster.vcov(lm3, data$COWcode))
+lm3se <- coeftest(lm3, cluster.vcov(lm3, data$COWcode))[, 2]
 
 lm4 <- lm(loginfl ~ system_ps + e_total_fuel_income_pc + e_pop + stock, data=data)
-lm4se <- coeftest(lm4, cluster.vcov(lm4, data$COWcode))
+lm4se <- coeftest(lm4, cluster.vcov(lm4, data$COWcode))[, 2]
 
 
 lm3.d <- lm(loginfl ~ system_pi + e_total_fuel_income_pc + e_pop + stock, data=democracy)
-lm3.dse <- coeftest(lm3.d, cluster.vcov(lm3.d, democracy$COWcode))
+lm3.dse <- coeftest(lm3.d, cluster.vcov(lm3.d, democracy$COWcode))[, 2]
 
 lm3.a <- lm(loginfl ~ system_pi + e_total_fuel_income_pc + e_pop + stock, data=autocracy)
-lm3.ase <- coeftest(lm3.a, cluster.vcov(lm3.a, autocracy$COWcode))
+lm3.ase <- coeftest(lm3.a, cluster.vcov(lm3.a, autocracy$COWcode))[, 2]
 
 
 lm4.d <- lm(loginfl ~ system_ps + e_total_fuel_income_pc + e_pop + stock, data=democracy)
-lm4.dse <- coeftest(lm4.d, cluster.vcov(lm4.d, democracy$COWcode))
+lm4.dse <- coeftest(lm4.d, cluster.vcov(lm4.d, democracy$COWcode))[, 2]
 
 lm4.a <- lm(loginfl ~ system_ps + e_total_fuel_income_pc + e_pop + stock, data=autocracy)
-lm4.ase <- coeftest(lm4.a, cluster.vcov(lm4.a, autocracy$COWcode))
+lm4.ase <- coeftest(lm4.a, cluster.vcov(lm4.a, autocracy$COWcode))[, 2]
 
 
 
 # Investment -------------------------------------------------------------
 
 lm5 <- lm(investlog ~ system_pi + e_total_fuel_income_pc + e_pop + stock, data=data)
-lm5se <- coeftest(lm5, cluster.vcov(lm5, data$COWcode))
+lm5se <- coeftest(lm5, cluster.vcov(lm5, data$COWcode))[, 2]
 
 lm6 <- lm(investlog ~ system_ps + e_total_fuel_income_pc + e_pop + stock, data=data)
-lm6se <- coeftest(lm6, cluster.vcov(lm6, data$COWcode))
+lm6se <- coeftest(lm6, cluster.vcov(lm6, data$COWcode))[, 2]
 
 
 lm5.d <- lm(investlog ~ system_pi + e_total_fuel_income_pc + e_pop + stock, data=democracy)
-lm5.dse <- coeftest(lm5.d, cluster.vcov(lm5.d, democracy$COWcode))
+lm5.dse <- coeftest(lm5.d, cluster.vcov(lm5.d, democracy$COWcode))[, 2]
 
 lm5.a <- lm(investlog ~ system_pi + e_total_fuel_income_pc + e_pop + stock, data=autocracy)
-lm5.ase <- coeftest(lm5.a, cluster.vcov(lm5.a, autocracy$COWcode))
+lm5.ase <- coeftest(lm5.a, cluster.vcov(lm5.a, autocracy$COWcode))[, 2]
 
 
 lm6.d <- lm(investlog ~ system_ps + e_total_fuel_income_pc + e_pop + stock, data=democracy)
-lm6.dse <- coeftest(lm6.d, cluster.vcov(lm6.d, democracy$COWcode))
+lm6.dse <- coeftest(lm6.d, cluster.vcov(lm6.d, democracy$COWcode))[, 2]
 
 lm6.a <- lm(investlog ~ system_ps + e_total_fuel_income_pc + e_pop + stock, data=autocracy)
-lm6.ase <- coeftest(lm6.a, cluster.vcov(lm6.a, autocracy$COWcode))
+lm6.ase <- coeftest(lm6.a, cluster.vcov(lm6.a, autocracy$COWcode))[, 2]
 
 
 # Change in GDP -----------------------------------------------------------
 lm7 <- lm(wdi_gdpcapgr ~ system_pi + e_total_fuel_income_pc + e_pop + stock, data=data)
-lm7se <- coeftest(lm7, cluster.vcov(lm7, data$COWcode))
+lm7se <- coeftest(lm7, cluster.vcov(lm7, data$COWcode))[, 2]
 
 lm8 <- lm(wdi_gdpcapgr ~ system_ps + e_total_fuel_income_pc + e_pop + stock, data=data)
-lm8se <- coeftest(lm8, cluster.vcov(lm8, data$COWcode))
+lm8se <- coeftest(lm8, cluster.vcov(lm8, data$COWcode))[, 2]
 
 lm7.d <- lm(wdi_gdpcapgr ~ system_pi + e_total_fuel_income_pc + e_pop + stock, data=democracy)
-lm7.dse <- coeftest(lm7.d, cluster.vcov(lm7.d, democracy$COWcode))
+lm7.dse <- coeftest(lm7.d, cluster.vcov(lm7.d, democracy$COWcode))[, 2]
 
 lm7.a <- lm(wdi_gdpcapgr ~ system_pi + e_total_fuel_income_pc + e_pop + stock, data=autocracy)
-lm7.ase <- coeftest(lm7.a, cluster.vcov(lm7.a, autocracy$COWcode))
+lm7.ase <- coeftest(lm7.a, cluster.vcov(lm7.a, autocracy$COWcode))[, 2]
 
 
 lm8.d <- lm(wdi_gdpcapgr ~ system_ps + e_total_fuel_income_pc + e_pop + stock, data=democracy)
-lm8.dse <- coeftest(lm8.d, cluster.vcov(lm8.d, democracy$COWcode))
+lm8.dse <- coeftest(lm8.d, cluster.vcov(lm8.d, democracy$COWcode))[, 2]
 
 lm8.a <- lm(wdi_gdpcapgr ~ system_ps + e_total_fuel_income_pc + e_pop + stock, data=autocracy)
-lm8.ase <- coeftest(lm8.a, cluster.vcov(lm8.a, autocracy$COWcode))
+lm8.ase <- coeftest(lm8.a, cluster.vcov(lm8.a, autocracy$COWcode))[, 2]
 
 # Outputs, Reg Tables -----------------------------------------------------------------
 #Economic Outcomes, All Data
