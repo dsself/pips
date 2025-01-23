@@ -404,10 +404,6 @@ data <- left_join(vdemfull, final, by = c("year", "country_name", "COWcode")) |>
 
 data$wdi_gdpcapgr <- as.numeric(gsub(",", ".", data$wdi_gdpcapgr))
 
-#subset to dem/aut
-democracy <- subset(data, v2x_polyarchy > .42)
-autocracy <- subset(data, v2x_polyarchy <= .42)
-
 data$v2xps_party <- data$v2xps_party.y
 
 data <- data %>%
@@ -421,9 +417,13 @@ data <- data %>%
          gdplog,
          loginfl,
          investlog,
-         wdi_gdpcapgr) %>%
+         wdi_gdpcapgr,
+         v2x_polyarchy) %>%
   unique()
-                    
+
+#subset to dem/aut
+democracy <- subset(data, v2x_polyarchy > .42)
+autocracy <- subset(data, v2x_polyarchy <= .42)              
 
 lm1 <- lm(gdplog ~ gov_pi + e_total_fuel_income_pc + e_pop + stock + as.factor(COWcode) + as.factor(year), data=data)
 lm1se <- coeftest(lm1, cluster.vcov(lm1, data$COWcode))
@@ -516,21 +516,21 @@ lm8.ase <- coeftest(lm8.a, cluster.vcov(lm8.a, autocracy$COWcode))
 
 
 stargazer(lm1, lm2, lm7, lm8, lm3, lm4, lm5, lm6, 
-          se = list(lm1se, lm2se, lm7se, lm8se, lm3se, lm4se, lm5se, lm6se), 
+          se = list(lm1se[,2], lm2se[,2], lm7se[,2], lm8se[,2], lm3se[,2], lm4se[,2], lm5se[,2], lm6se[,2]), 
           p.auto = FALSE, 
           omit = c("Constant", "as\\.factor\\(COWcode\\)", "as\\.factor\\(year\\)"), 
           omit.stat = c("adj.rsq", "ser", "f", "rsq"), 
           covariate.labels = c("Institutionalization", "Strength", "Fuel Income", "Population", "Capital Stock", "Income Inequality"), 
           digits = 2)
 
-stargazer(lm1.d, lm2.d, lm7.d, lm8.d, lm3.d, lm4.d, lm5.d, lm6, se = list(lm1.dse, lm2.dse, lm7.dse, lm8.dse, lm3.dse, lm4.dse, lm5.dse, lm6.dse), 
+stargazer(lm1.d, lm2.d, lm7.d, lm8.d, lm3.d, lm4.d, lm5.d, lm6.d, se = list(lm1.dse[,2], lm2.dse[,2], lm7.dse[,2], lm8.dse[,2], lm3.dse[,2], lm4.dse[,2], lm5.dse[,2], lm6.dse[,2]), 
           p.auto = FALSE, 
           omit = c("Constant", "as\\.factor\\(COWcode\\)", "as\\.factor\\(year\\)"), 
           omit.stat = c("adj.rsq", "ser", "f", "rsq"), 
           covariate.labels = c("Institutionalization", "Strength", "Fuel Income", "Population", "Capital Stock", "Income Inequality"), 
           digits = 2)
 
-stargazer(lm1.a, lm2.a, lm7.a, lm8.a, lm3.a, lm4.a, lm5.a, lm6.a, se=list(lm1.ase, lm2.ase, lm7.ase, lm8.ase, lm3.ase, lm4.ase, lm5.ase, lm6.ase), p.auto = F, 
+stargazer(lm1.a, lm2.a, lm7.a, lm8.a, lm3.a, lm4.a, lm5.a, lm6.a, se=list(lm1.ase[,2], lm2.ase[,2], lm7.ase[,2], lm8.ase[,2], lm3.ase[,2], lm4.ase[,2], lm5.ase[,2], lm6.ase[,2]), p.auto = F, 
           omit = c("Constant", "as\\.factor\\(COWcode\\)", "as\\.factor\\(year\\)"), 
           omit.stat = c("adj.rsq", "ser", "f", "rsq"), 
           covariate.labels = c("Institutionalization", "Strength", "Fuel Income", "Population", "Capital Stock", "Income Inequality"), 
