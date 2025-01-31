@@ -377,7 +377,7 @@ print(fit1[["loadings"]])
 #### For data viz
 ps_global <- (fit1$loadings)
 #### Check c.alpha
-psych::alpha(ps, use = "complete.obs")
+psych::alpha(ps, use = "complete.obs", check.keys=T)
 #### Diagram of loadings
 fa.diagram(fit1, main = "ps")
 #### Save Score
