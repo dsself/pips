@@ -113,5 +113,16 @@ ggplot(data = our_data) +
   theme_bw() +
   theme(legend.position = "none")
 
+our_data2 <- read_csv("data/pips_beta2.csv") %>%
+  mutate(dem = as.factor(ifelse(is.na(dem_party_inst) == 1, "Autocracy", "Democracy")))
+
+ggplot(data = our_data2) +
+  geom_point(aes(x = party_str, y = party_inst, group = dem, color = dem)) +
+  scale_color_manual(values = c("black", "grey35"))+
+  theme_bw() +
+  theme(legend.title = element_blank()) +
+  theme(legend.position = "bottom") + 
+  labs(x = "Party Strength", y = "Party Institutionalization")
+
 
   
