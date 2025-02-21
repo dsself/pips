@@ -461,34 +461,135 @@ latent_data <- left_join(latent_data, vparty_alliance, by = c("party_id", "year"
 ## Finished Party Level Data
 ## party_inst_party_level <- left_join(latent_data, additive, by = c("party_id", "year"))
 
-#### System Level data
+### System Level data
 aggragate <- latent_data[!grepl("^alliance:", latent_data$v2paenname.x, ignore.case = TRUE), ]
 rownames(aggragate) <- NULL
 aggragate <- aggragate %>%
-  dplyr::select(pi_multi = piendmulti, pi_add = piendadd, psla, year, v2paid = party_id)
+  dplyr::select(pi_multi = piendmulti, pi_add = piendadd, psla, year, v2paid = party_id, pi_add_auto = piendadd_auto, pi_multi_auto = piendmulti_auto, psla_auto, pi_add_dem = piendadd_dem, pi_multi_dem = piendmulti_dem, psla_dem)
 aggragate <- left_join(aggragate, vparty, by = c("year", "v2paid")) %>%
-  dplyr::select(pi_multi, pi_add, psla, COWcode, country_id, year, v2paid, v2pavote, v2pagovsup, v2paseatshare)
+  dplyr::select(pi_multi, pi_add, psla, pi_add_auto, pi_add_dem, pi_multi_auto, pi_multi_dem, psla_dem, psla_auto, COWcode, country_id, year, v2paid, v2pavote, v2pagovsup, v2paseatshare)
 
 system_data <- aggragate %>%
-  mutate(multi_w = (v2pavote*pi_multi)/100, add_w = (v2pavote*pi_add)/100, ps_w = (v2pavote*psla)/100) %>%
+  mutate(multi_w = (v2pavote*pi_multi)/100, 
+         add_w = (v2pavote*pi_add)/100, 
+         ps_w = (v2pavote*psla)/100,
+         multi_w_dem = (v2pavote*pi_multi_dem)/100, 
+         add_w_dem = (v2pavote*pi_add_dem)/100, 
+         ps_w_dem = (v2pavote*psla_dem)/100,
+         multi_w_auto = (v2pavote*pi_multi_auto)/100, 
+         add_w_auto = (v2pavote*pi_add_auto)/100, 
+         ps_w_auto = (v2pavote*psla_auto)/100,) %>%
   group_by(country_id, COWcode, year) %>%
-  summarize(votetotal = sum(v2pavote, na.rm = T), syswave_pi_add = sum(add_w, na.rm = T), syswave_pi_multi = sum(add_w, na.rm = T), syswave_ps = sum(ps_w, na.rm = T), sysave_pi_add = mean(pi_add, na.rm = T), sysave_pi_multi = sum(pi_multi, na.rm = T), sysave_ps = mean(psla, na.rm = T), sys_pi_sd = sd(pi_add, na.rm = T), sys_pi_sd_m = sd(pi_add, na.rm = T), sys_ps_sd = sd(psla, na.rm = T), count = n()) %>%
-  dplyr::select(COWcode, country_id, year, votetotal, syswave_pi_add, syswave_pi_multi, syswave_ps, sysave_pi_add, sysave_pi_multi, sysave_ps, sys_pi_sd, sys_pi_sd_m, sys_ps_sd, count)
+  summarize(votetotal = sum(v2pavote, na.rm = T),
+            syswave_pi_add = sum(add_w, na.rm = T),
+            syswave_pi_multi = sum(add_w, na.rm = T),
+            syswave_ps = sum(ps_w, na.rm = T),
+            sysave_pi_add = mean(pi_add, na.rm = T),
+            sysave_pi_multi = sum(pi_multi, na.rm = T),
+            sysave_ps = mean(psla, na.rm = T),
+            sys_pi_sd = sd(pi_add, na.rm = T),
+            sys_pi_sd_m = sd(pi_add, na.rm = T),
+            sys_ps_sd = sd(psla, na.rm = T),
+            ### Democracies
+            syswave_pi_add_dem = sum(add_w_dem, na.rm = T),
+            syswave_pi_multi_dem = sum(add_w_dem, na.rm = T),
+            syswave_ps_dem = sum(ps_w_dem, na.rm = T),
+            sysave_pi_add_dem = mean(pi_add_dem, na.rm = T),
+            sysave_pi_multi_dem = sum(pi_multi_dem, na.rm = T),
+            sysave_ps_dem = mean(psla_dem, na.rm = T),
+            sys_pi_sd_dem = sd(pi_add_dem, na.rm = T),
+            sys_pi_sd_m_dem = sd(pi_add_dem, na.rm = T),
+            sys_ps_sd_dem = sd(psla_dem, na.rm = T),
+            ### Autocracies
+            syswave_pi_add_auto = sum(add_w_auto, na.rm = T),
+            syswave_pi_multi_auto = sum(add_w_auto, na.rm = T),
+            syswave_ps_auto = sum(ps_w_auto, na.rm = T),
+            sysave_pi_add_auto = mean(pi_add_auto, na.rm = T),
+            sysave_pi_multi_auto = sum(pi_multi_auto, na.rm = T),
+            sysave_ps_auto = mean(psla_auto, na.rm = T),
+            sys_pi_sd_auto = sd(pi_add_auto, na.rm = T),
+            sys_pi_sd_m_auto = sd(pi_add_auto, na.rm = T),
+            sys_ps_sd_auto = sd(psla_auto, na.rm = T),
+            count = n()) %>%
+  dplyr::select(COWcode, country_id, year, votetotal, syswave_pi_add, syswave_pi_multi, syswave_ps, sysave_pi_add, sysave_pi_multi, sysave_ps, sys_pi_sd, sys_pi_sd_m, sys_ps_sd, syswave_pi_add_dem, syswave_pi_multi_dem, syswave_ps_dem, sysave_pi_add_dem, sysave_pi_multi_dem, sysave_ps_dem, sys_pi_sd_dem, sys_pi_sd_m_dem, sys_ps_sd_dem, syswave_pi_add_auto, syswave_pi_multi_auto, syswave_ps_auto, sysave_pi_add_auto, sysave_pi_multi_auto, sysave_ps_auto, sys_pi_sd_auto, sys_pi_sd_m_auto, sys_ps_sd_auto, count)
 
 gov_sup <- aggragate %>%
-  mutate(multi_w = (v2paseatshare*pi_multi), add_w = (v2paseatshare*pi_add), ps_w = (v2paseatshare*psla), govrole = as.factor(ifelse(v2pagovsup <= 2, "Government", "Opposition"))) %>%
+  mutate(multi_w = (v2paseatshare*pi_multi),
+         add_w = (v2paseatshare*pi_add),
+         ps_w = (v2paseatshare*psla),
+         multi_w_dem = (v2paseatshare*pi_multi_dem),
+         add_w_dem = (v2paseatshare*pi_add_dem),
+         ps_w_dem = (v2paseatshare*psla_dem),
+         multi_w_auto = (v2paseatshare*pi_multi_auto),
+         add_w_auto = (v2paseatshare*pi_add_auto),
+         ps_w_auto = (v2paseatshare*psla_auto),
+         govrole = as.factor(ifelse(v2pagovsup <= 2, "Government", "Opposition"))) %>%
   dplyr::filter(govrole == "Government", v2pagovsup != 4) %>%
   group_by(country_id, COWcode, year) %>%
-  summarize(sstotal = sum(v2paseatshare, na.rm = T), govw_pi_add = sum(add_w, na.rm = T)/sstotal, govw_pi_multi = sum(add_w, na.rm = T)/sstotal, govw_ps = sum(ps_w)/sstotal, gov_pi_add = mean(pi_add, na.rm = T), gov_pi_multi = mean(pi_multi, na.rm = T), gov_ps = mean(psla, na.rm = T)) %>%
-  dplyr::select(COWcode, country_id, year, sstotal, govw_pi_add, govw_pi_multi, govw_ps, gov_pi_add, gov_pi_multi, gov_ps)
+  summarize(sstotal = sum(v2paseatshare, na.rm = T), 
+            govw_pi_add = sum(add_w, na.rm = T)/sstotal, 
+            govw_pi_multi = sum(add_w, na.rm = T)/sstotal, 
+            govw_ps = sum(ps_w)/sstotal, 
+            gov_pi_add = mean(pi_add, na.rm = T),
+            gov_pi_multi = mean(pi_multi, na.rm = T),
+            gov_ps = mean(psla, na.rm = T),
+            #### Democracies
+            govw_pi_add_dem = sum(add_w_dem, na.rm = T)/sstotal, 
+            govw_pi_multi_dem = sum(add_w_dem, na.rm = T)/sstotal, 
+            govw_ps_dem = sum(ps_w_dem)/sstotal, 
+            gov_pi_add_dem = mean(pi_add_dem, na.rm = T),
+            gov_pi_multi_dem = mean(pi_multi_dem, na.rm = T),
+            gov_ps_dem = mean(psla_dem, na.rm = T),
+            #### Autocracies
+            govw_pi_add_auto = sum(add_w_auto, na.rm = T)/sstotal, 
+            govw_pi_multi_auto = sum(add_w_auto, na.rm = T)/sstotal, 
+            govw_ps_auto = sum(ps_w_auto)/sstotal, 
+            gov_pi_add_auto = mean(pi_add_auto, na.rm = T),
+            gov_pi_multi_auto = mean(pi_multi_auto, na.rm = T),
+            gov_ps_auto = mean(psla_auto, na.rm = T)) %>%
+  dplyr::select(COWcode, country_id, year, sstotal, govw_pi_add, govw_pi_multi, govw_ps, gov_pi_add, gov_pi_multi, gov_ps,
+                govw_pi_add_dem, govw_pi_multi_dem, govw_ps_dem, gov_pi_add_dem, gov_pi_multi_dem, gov_ps_dem,
+                govw_pi_add_auto, govw_pi_multi_auto, govw_ps_auto, gov_pi_add_auto, gov_pi_multi_auto, gov_ps_auto)
 
 opp_sup <- aggragate %>%
-  mutate(multi_w = (v2paseatshare*pi_multi), add_w = (v2paseatshare*pi_add), ps_w = (v2paseatshare*psla), govrole = as.factor(ifelse(v2pagovsup <= 2, "Government", "Opposition"))) %>%
+  mutate(multi_w = (v2paseatshare*pi_multi),
+         add_w = (v2paseatshare*pi_add),
+         ps_w = (v2paseatshare*psla), 
+         multi_w_dem = (v2paseatshare*pi_multi_dem),
+         add_w_dem = (v2paseatshare*pi_add_dem),
+         ps_w_dem = (v2paseatshare*psla_dem),
+         multi_w_auto = (v2paseatshare*pi_multi_auto),
+         add_w_auto = (v2paseatshare*pi_add_auto),
+         ps_w_auto = (v2paseatshare*psla_auto),
+         govrole = as.factor(ifelse(v2pagovsup <= 2, "Government", "Opposition"))) %>%
   dplyr::filter(govrole == "Opposition", v2pagovsup != 4) %>%
   group_by(COWcode, country_id, year) %>%
-  summarize(sstotal = sum(v2paseatshare, na.rm = T), oppw_pi_add = sum(add_w, na.rm = T)/sstotal, oppw_pi_multi = sum(add_w, na.rm = T)/sstotal, oppw_ps = sum(ps_w, na.rm = T)/sstotal, opp_pi_add = mean(pi_add, na.rm = T), opp_pi_multi = mean(pi_multi, na.rm = T), opp_ps = mean(psla, na.rm = T)) %>%
+  summarize(sstotal = sum(v2paseatshare, na.rm = T),
+            oppw_pi_add = sum(add_w, na.rm = T)/sstotal,
+            oppw_pi_multi = sum(add_w, na.rm = T)/sstotal,
+            oppw_ps = sum(ps_w, na.rm = T)/sstotal,
+            opp_pi_add = mean(pi_add, na.rm = T),
+            opp_pi_multi = mean(pi_multi, na.rm = T),
+            opp_ps = mean(psla, na.rm = T),
+            ### Democracy
+            oppw_pi_add_dem = sum(add_w_dem, na.rm = T)/sstotal,
+            oppw_pi_multi_dem = sum(add_w_dem, na.rm = T)/sstotal,
+            oppw_ps_dem = sum(ps_w_dem, na.rm = T)/sstotal,
+            opp_pi_add_dem = mean(pi_add_dem, na.rm = T),
+            opp_pi_multi_dem = mean(pi_multi_dem, na.rm = T),
+            opp_ps_dem = mean(psla_dem, na.rm = T),
+            #### Autocracies
+            oppw_pi_add_auto = sum(add_w_auto, na.rm = T)/sstotal,
+            oppw_pi_multi_auto = sum(add_w_auto, na.rm = T)/sstotal,
+            oppw_ps_auto = sum(ps_w_auto, na.rm = T)/sstotal,
+            opp_pi_add_auto = mean(pi_add_auto, na.rm = T),
+            opp_pi_multi_auto = mean(pi_multi_auto, na.rm = T),
+            opp_ps_auto = mean(psla_auto, na.rm = T)
+            ) %>%
   rename(sstotal_opp = sstotal) %>%
-  dplyr::select(COWcode, country_id, year, sstotal_opp, oppw_pi_add, oppw_pi_multi, oppw_ps, opp_pi_add, opp_pi_multi, opp_ps)
+  dplyr::select(COWcode, country_id, year, sstotal_opp, oppw_pi_add, oppw_pi_multi, oppw_ps, opp_pi_add, opp_pi_multi, opp_ps,
+                oppw_pi_add_dem, oppw_pi_multi_dem, oppw_ps_dem, opp_pi_add_dem, opp_pi_multi_dem, opp_ps_dem,
+                oppw_pi_add_auto, oppw_pi_multi_auto, oppw_ps_auto, opp_pi_add_auto, opp_pi_multi_auto, opp_ps_auto)
 
 #### Alliances
 alliance <- latent_data %>%
@@ -499,6 +600,7 @@ alliance <- latent_data %>%
   mutate(sstotal = sum(v2paseatshare, na.rm = T), allw_pi_add = sum(add_w, na.rm = T)/sstotal, allw_pi_multi = sum(add_w, na.rm = T)/sstotal, allw_ps = sum(ps_w, na.rm = T)/sstotal, all_pi_add = mean(pi_add, na.rm = T), all_pi_multi = mean(pi_multi, na.rm = T), all_ps = mean(psla, na.rm = T)) %>%
   rename(sstotal_all = sstotal) %>%
   dplyr::select(v2panaallian, country_id, year, sstotal_all, allw_pi_add, allw_pi_multi, allw_ps, all_pi_add, all_pi_multi, all_ps, party_id = v2paid)
+
 
 #### final data
 liminal <- left_join(latent_data, system_data, by = c("country_id", "year"))
@@ -531,8 +633,20 @@ party_inst <- party_inst %>%
          system_pi_m = sysave_pi_multi, 
          system_pi_sd = sys_pi_sd,
          system_pi_m_sd = sys_pi_sd_m,
+         system_pi_dem = sysave_pi_add_dem, 
+         system_pi_m_dem = sysave_pi_multi_dem, 
+         system_pi_sd_dem = sys_pi_sd_dem,
+         system_pi_m_sd_dem = sys_pi_sd_m_dem,
+         system_pi_auto = sysave_pi_add_auto, 
+         system_pi_m_auto = sysave_pi_multi_auto, 
+         system_pi_sd_auto = sys_pi_sd_auto,
+         system_pi_m_sd_auto = sys_pi_sd_m_auto,
          weighted_system_pi = syswave_pi_add, 
-         weighted_system_pi_m = syswave_pi_multi, 
+         weighted_system_pi_m = syswave_pi_multi,
+         weighted_system_pi_dem = syswave_pi_add_dem ,
+         weighted_system_pi_m_dem  = syswave_pi_multi_dem ,
+         weighted_system_pi_auto = syswave_pi_add_auto, 
+         weighted_system_pi_m_auto = syswave_pi_multi_auto,
          gov_pi = gov_pi_add,
          gov_pi_m = gov_pi_multi, 
          weighted_gov_pi = govw_pi_add, 
@@ -541,6 +655,22 @@ party_inst <- party_inst %>%
          opp_pi_m = opp_pi_multi, 
          weighted_opp_pi = oppw_pi_add, 
          weighted_opp_pi_m = oppw_pi_multi,
+         gov_pi_dem = gov_pi_add_dem,
+         gov_pi_m_dem = gov_pi_multi_dem, 
+         weighted_gov_pi_dem = govw_pi_add_dem, 
+         weighted_gov_pi_m_dem = govw_pi_multi_dem,
+         opp_pi_dem = opp_pi_add_dem,
+         opp_pi_m_dem = opp_pi_multi_dem, 
+         weighted_opp_pi_dem = oppw_pi_add_dem, 
+         weighted_opp_pi_m_dem = oppw_pi_multi_dem,
+         gov_pi_auto = gov_pi_add_auto,
+         gov_pi_m_auto = gov_pi_multi_auto, 
+         weighted_gov_pi_auto = govw_pi_add_auto, 
+         weighted_gov_pi_m_auto = govw_pi_multi_auto,
+         opp_pi_auto = opp_pi_add_auto,
+         opp_pi_m_auto = opp_pi_multi_auto, 
+         weighted_opp_pi_auto = oppw_pi_add_auto, 
+         weighted_opp_pi_m_auto = oppw_pi_multi_auto,
          party_str = psla,
          dem_party_str = psla_dem,
          auto_party_str = psla_auto,
@@ -551,6 +681,20 @@ party_inst <- party_inst %>%
          weighted_gov_ps = govw_ps,
          opp_ps,
          weighted_opp_ps = oppw_ps,
+         system_ps_dem = sysave_ps_dem,
+         system_ps_sd_dem = sys_ps_sd_dem,
+         weighted_system_ps_dem = syswave_ps_dem,
+         gov_ps_dem,
+         weighted_gov_ps_dem = govw_ps_dem,
+         opp_ps_dem,
+         weighted_opp_ps_dem = oppw_ps_dem,
+         system_ps_auto = sysave_ps_auto,
+         system_ps_sd_auto = sys_ps_sd_auto,
+         weighted_system_ps_auto = syswave_ps_auto,
+         gov_ps_auto,
+         weighted_gov_ps_auto = govw_ps_auto,
+         opp_ps_auto,
+         weighted_opp_ps_auto = oppw_ps_auto,
          alliance_name = v2panaallian.x,
          weighted_all_pi = allw_pi_add, 
          weighted_all_pi_m = allw_pi_multi, 
