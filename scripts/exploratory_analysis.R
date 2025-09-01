@@ -25,11 +25,11 @@ library(vdemdata)
 
 # Data --------------------------------------------------------------------
 #read in data
-final <- read_csv(pips_beta2.csv") |> 
+final <- read_csv(pips_beta3.csv") |> 
   select(-v2x_polyarchy)
 
 #import vdem data
-vdemfull <- readRDS("C:/Users/shari/Downloads/V-Dem-CY-Full+Others-v14.rds") %>%
+vdemfull <- vdemdata %>%
   select(country_name, year, COWcode, v2x_polyarchy, v2peedueq, e_wbgi_cce, e_coups, e_pop, e_total_fuel_income_pc, v2x_veracc,
          v2x_horacc, e_gdppc, e_miinflat) 
 
@@ -535,6 +535,7 @@ stargazer(lm1.a, lm2.a, lm7.a, lm8.a, lm3.a, lm4.a, lm5.a, lm6.a, se=list(lm1.as
           omit.stat = c("adj.rsq", "ser", "f", "rsq"), 
           covariate.labels = c("Institutionalization", "Strength", "Fuel Income", "Population", "Capital Stock", "Income Inequality"), 
           digits = 2)
+
 
 
 
