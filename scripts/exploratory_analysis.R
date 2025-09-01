@@ -25,7 +25,7 @@ library(vdemdata)
 
 # Data --------------------------------------------------------------------
 #read in data
-final <- read_csv("C:/Users/shari/Downloads/pips_beta2.csv") |> 
+final <- read_csv(pips_beta2.csv") |> 
   select(-v2x_polyarchy)
 
 #import vdem data
@@ -43,11 +43,11 @@ ineq <- read.csv("data/swiid9_6_summary.csv")
 ineq$country_name <- ineq$country
 
 #import capital stock data
-stock <- read_excel("C:/Users/shari/Downloads/capitalstock.xlsx") |> 
+stock <- read_excel("data/capitalstock.xlsx") |> 
   rename(country_name = country, stock = kgov_rppp)
 
 #import GDP change data
-change <- read.csv("C:/Users/shari/Downloads/gdpgrowth.csv") %>%
+change <- read.csv("data/gdpgrowth.csv") %>%
   rename(country_name = cname) 
 
 
@@ -535,5 +535,6 @@ stargazer(lm1.a, lm2.a, lm7.a, lm8.a, lm3.a, lm4.a, lm5.a, lm6.a, se=list(lm1.as
           omit.stat = c("adj.rsq", "ser", "f", "rsq"), 
           covariate.labels = c("Institutionalization", "Strength", "Fuel Income", "Population", "Capital Stock", "Income Inequality"), 
           digits = 2)
+
 
 
